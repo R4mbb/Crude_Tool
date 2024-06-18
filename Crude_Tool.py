@@ -2,6 +2,8 @@
 
 import os
 import argparse
+import time
+from subprocess import PIPE, Popen
 
 disp = '''
 
@@ -23,61 +25,118 @@ disp = '''
                                                                                                     
 '''
 
-token = 0
+tool_list = ["nmap", "nikto", "dirb", "dirsearch", "msfconsole"]
+exit_token = 0
 
-def main():
+
+def osSearch():
+    pass
+
+
+def toolSearch():
+    # Tool presence
+    pass
+
+
+def menu():
     os.system("clear")
     print(disp)
     print("Select Mode plz..")
     print(" q. Quit ")
-    print(" 1. Nmap ")
-    print(" 2. Nikto ")
-    print(" 3. Dirb ")
-    print(" 4. Dirsearch ")
-    print(" 5. Metasploit ")
+    for num, tool in enumerate(tool_list):
+        print(" {}. {} ".format(num+1, tool))
     print()
-    n = input("\u0332".join("R4m ") + ">> ")
+    n = input("R4mbb >> ")
+    return n
 
+
+def isTool(command):
+    isCommand = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
+    isCommandOut, isCommandErr = isCommand.communicate()
+
+    if (isCommandOut):
+        return True
+    else:
+        return False
+
+
+def notFoundTool(command):
+    os.system("clear")
+    print(disp)
+    print("{} is not found..".format(command))
+    time.sleep(2)
+    return
+
+
+def exploit(n, args):
+    if n == '1':
+        if (isTool("nmap")):
+            os.system("clear")
+            print(disp)
+            print("Select Scan Nmap..!")
+            print(" 1. ALL ")
+            print(" 2. TCP ")
+            print(" 3. UDP ")
+            print()
+            n2 = input("R4mbb >> ")
+            if n2 == '1':
+                os.system("gnome-terminal --tab -- /bin/bash -c \"nmap -A -p 1-65535 {};bash\"".format(args.IP))
+            elif n2 == '2':
+                os.system("gnome-terminal --tab -- /bin/bash -c \"nmap -sT {};bash\"".format(args.IP))
+            elif n2 == '3':
+                os.system("gnome-terminal --tab -- /bin/bash -c \"nmap -sUV -T4 -F --version-intensity 0 {};bash\"".format(args.IP))
+            else:
+                return
+        else:
+            notFoundTool("Nmap")
+            return
+    elif n == '2':
+        if (isTool("nikto")):
+            os.system("gnome-terminal --tab -- /bin/bash -c \"nikto -h {};bash\"".format(args.IP))
+        else:
+            notFoundTool("Nikto")
+            return
+    elif n == '3':
+        if (isTool("dirb")):
+            os.system("gnome-terminal --tab -- /bin/bash -c \"dirb http://{};bash\"".format(args.IP))
+        else:
+            notFoundTool("Dirb")
+            return
+    elif n == '4':
+        if (isTool("dirsearch")):
+            os.system("gnome-terminal --tab -- /bin/bash -c \"dirsearch -u {};bash\"".format(args.IP))
+        else:
+            notFoundTool("Dirsearch")
+    elif n == '5':
+        if (isTool("msfconsole")):
+            os.system("gnome-terminal --tab -- /bin/bash -c \"msfconsole;bash\"")
+        else:
+            notFoundTool("Metasploit")
+    elif n == 'q':
+        exit_token += 1
+    else:
+        return
+
+
+def main():
+    n = menu()
     parser = argparse.ArgumentParser(description='R4mbb\'s Poor Tool..!')
     parser.add_argument('-i', '--IP', help='Target IP input here..!')
     args = parser.parse_args()
 
-    if n == '1':
-        os.system("clear")
-        print(disp)
-        print("Select Scan Nmap..!")
-        print(" 1. ALL ")
-        print(" 2. TCP ")
-        print(" 3. UDP ")
-        print()
-        n2 = input("\u0332".join("R4m ") + ">> ")
-        if n2 == '1':
-            os.system("gnome-terminal --tab -- /bin/bash -c \"nmap -A -p 1-65535 {};bash\"".format(args.IP))
-        elif n2 == '2':
-            os.system("gnome-terminal --tab -- /bin/bash -c \"nmap -sT {};bash\"".format(args.IP))
-        elif n2 == '3':
-            os.system("gnome-terminal --tab -- /bin/bash -c \"nmap -sUV -T4 -F --version-intensity 0 {};bash\"".format(args.IP))
-        else:
-            return
-    elif n == '2':
-        os.system("gnome-terminal --tab -- /bin/bash -c \"nikto -h {};bash\"".format(args.IP))
-    elif n == '3':
-        os.system("gnome-terminal --tab -- /bin/bash -c \"dirb http://{};bash\"".format(args.IP))
-    elif n == '4':
-        os.system("gnome-terminal --tab -- /bin/bash -c \"dirsearch -u {};bash\"".format(args.IP))
-    elif n == '5':
-        os.system("gnome-terminal --tab -- /bin/bash -c \"msfconsole;bash\"")
-    else:
-        token += 1
+    exploit(n, args)
+
+
 
 
 if __name__ == '__main__':
     try:
         while True:
             main()
-            if token > 0:
+            if exit_token > 0:
                 break
     except:
+        os.system("clear")
         print()
         print("Bye~")
 
