@@ -4,6 +4,7 @@ import os
 import argparse
 import time
 from subprocess import PIPE, Popen
+from tqdm import tqdm
 
 disp = '''
 
@@ -25,9 +26,8 @@ disp = '''
                                                                                                     
 '''
 
-tool_list = ["nmap", "nikto", "dirb", "dirsearch", "msfconsole"]
-exit_token = 0
-
+enableList = []
+exitToken = 0
 
 def osSearch():
     pass
@@ -35,16 +35,69 @@ def osSearch():
 
 def toolSearch():
     # Tool presence
-    pass
+    global tools
+
+    tool_list = Popen('cat ./tool_list.txt', shell=True, stdout=PIPE, stderr=PIPE)
+    tools, toolsErr = tool_list.communicate()
+    tools = tools.decode().split('\n')[:-1]
+
+
+    os.system("clear")
+    print(disp)
+    print("[**] Installed require tool/package searching... [**]")
+    print()
+
+    for i in tqdm(tools):
+        if '[package]' in i:
+            i = i.replace(' [package]', '')
+        apt_list = Popen('dpkg -l {}'.format(i), shell=True, stdout=PIPE, stderr=PIPE)
+        found, foundErr = apt_list.communicate()
+        time.sleep(0.05)
+
+        if b'<none>' in found or b'no packages' in foundErr:
+            enableList.append(0)
+        else:
+            enableList.append(1)
+
+    os.system("clear")
+    print(disp)
+    print('-'*35)
+    print()
+    print("[**] Installed require tool/package search [**]")
+    print()
+    print('-'*35)
+    print()
+
+    for num, tool in enumerate(tools):
+        installed = ''
+        if '[package]' in tool:
+            tool = tool.replace(' [package]', '')
+
+        if enableList[num]:
+            installed = 'Installed!!'
+        else:
+            installed = 'Not Installed!!'
+        print(" {0:<15} [{1}] ".format(tool, installed))
+
+    print()
+    print("Enter to Restart Search!!")
+    print()
+    print('-'*35)
+    print()
 
 
 def menu():
-    os.system("clear")
-    print(disp)
+    init()
     print("Select Mode plz..")
     print(" q. Quit ")
-    for num, tool in enumerate(tool_list):
-        print(" {}. {} ".format(num+1, tool))
+
+    num = 0
+    for tool in tools:
+        if '[package]' in tool:
+            continue
+        num += 1
+        print(" {}. {}".format(num, tool))
+
     print()
     n = input("R4mbb >> ")
     return n
@@ -113,9 +166,14 @@ def exploit(n, args):
         else:
             notFoundTool("Metasploit")
     elif n == 'q':
-        exit_token += 1
+        exitToken += 1
     else:
         return
+
+
+def init():
+    toolSearch()
+#   osSearch()
 
 
 def main():
@@ -133,7 +191,7 @@ if __name__ == '__main__':
     try:
         while True:
             main()
-            if exit_token > 0:
+            if exitToken > 1:
                 break
     except:
         os.system("clear")
