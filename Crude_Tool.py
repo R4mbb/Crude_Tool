@@ -121,7 +121,7 @@ def notFoundTool(command):
     return
 
 
-def exploit(n, args):
+def executeTool(n, args):
     if n == '1':
         if (isTool("nmap")):
             os.system("clear")
@@ -182,7 +182,7 @@ def main():
     parser.add_argument('-i', '--IP', help='Target IP input here..!')
     args = parser.parse_args()
 
-    exploit(n, args)
+    executeTool(n, args)
 
 
 
