@@ -24,6 +24,7 @@ disp = '''
       `...`      `...`        ...`    ....    `...`    ....   ...` `...`      ....  ...`            
                                                                                                     
                                                                                                     
+    
 '''
 
 enableList = []
@@ -86,8 +87,10 @@ def toolSearch():
     print()
 
 
-def menu():
+def menu(args):
     init()
+    print("[Target IP] ==> {}".format(args.IP))
+    print()
     print("Select Mode plz..")
     print(" q. Quit ")
 
@@ -177,11 +180,14 @@ def init():
 
 
 def main():
-    n = menu()
     parser = argparse.ArgumentParser(description='R4mbb\'s Poor Tool..!')
-    parser.add_argument('-i', '--IP', help='Target IP input here..!')
+    parser.add_argument('-i', '--IP', required=True, help='Target IP input here..!')
     args = parser.parse_args()
+    if args.IP == None:
+        exitToken += 1
+        return
 
+    n = menu(args)
     executeTool(n, args)
 
 
@@ -194,7 +200,10 @@ if __name__ == '__main__':
             if exitToken > 1:
                 break
     except:
+        pass
+    """
+    except:
         os.system("clear")
         print()
         print("Bye~")
-
+    """
