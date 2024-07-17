@@ -136,11 +136,11 @@ def executeTool(n, args):
             print()
             n2 = input("R4mbb >> ")
             if n2 == '1':
-                os.system("gnome-terminal --tab -- /bin/bash -c \"nmap -A -p 1-65535 {};bash\"".format(args.IP))
+                os.system("gnome-terminal -- sh -c \"nmap -A -p 1-65535 {}; exec sh\"".format(args.IP))
             elif n2 == '2':
-                os.system("gnome-terminal --tab -- /bin/bash -c \"nmap -sT {};bash\"".format(args.IP))
+                os.system("gnome-terminal -- sh -c \"nmap -sT {}; exec sh\"".format(args.IP))
             elif n2 == '3':
-                os.system("gnome-terminal --tab -- /bin/bash -c \"nmap -sUV -T4 -F --version-intensity 0 {};bash\"".format(args.IP))
+                os.system("gnome-terminal -- sh -c \"nmap -sUV -T4 -F --version-intensity 0 {}; exec sh\"".format(args.IP))
             else:
                 return
         else:
@@ -148,24 +148,35 @@ def executeTool(n, args):
             return
     elif n == '2':
         if (isTool("nikto")):
-            os.system("gnome-terminal --tab -- /bin/bash -c \"nikto -h {};bash\"".format(args.IP))
+            os.system("gnome-terminal -- sh -c \"nikto -h {}; exec sh\"".format(args.IP))
         else:
             notFoundTool("Nikto")
             return
     elif n == '3':
         if (isTool("dirb")):
-            os.system("gnome-terminal --tab -- /bin/bash -c \"dirb http://{};bash\"".format(args.IP))
+            os.system("clear")
+            print(disp)
+            print(" 1. http ")
+            print(" 2. https ")
+            print()
+            n2 = input("R4mbb >> ")
+            if n2 == '1':
+                os.system("gnome-terminal -- sh -c \"dirb http://{}; exec sh\"".format(args.IP))
+            elif n2 == '2':
+                os.system("gnome-terminal -- sh -c \"dirb https://{}; exec sh\"".format(args.IP))
+            else:
+                return
         else:
             notFoundTool("Dirb")
             return
     elif n == '4':
         if (isTool("dirsearch")):
-            os.system("gnome-terminal --tab -- /bin/bash -c \"dirsearch -u {};bash\"".format(args.IP))
+            os.system("gnome-terminal -- sh -c \"dirsearch -u {}; exec sh\"".format(args.IP))
         else:
             notFoundTool("Dirsearch")
     elif n == '5':
         if (isTool("msfconsole")):
-            os.system("gnome-terminal --tab -- /bin/bash -c \"msfconsole;bash\"")
+            os.system("gnome-terminal -- sh -c \"msfconsole; exec sh\"".format(args.IP))
         else:
             notFoundTool("Metasploit")
     elif n == 'q':
