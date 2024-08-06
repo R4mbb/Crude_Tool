@@ -5,27 +5,7 @@ import argparse
 import time
 from subprocess import PIPE, Popen
 from tqdm import tqdm
-
-disp = '''
-
-   Made by                                                                                                    
-                                                                                                    
-                                                              ```             ````                  
-      .yhhhhhhys+-           .yhh:                           `dNNo            sNNd                  
-      :NMMdhhhmMMNy`        -dMMM+                           .mMMs            yMMm                  
-      :NMM:  `.sMMM/       :mMMMM+                           .mMMs            yMMm                  
-      :NMM-    oMMM:     `+NN+dMM+    oddy./yddh+.`/yddhs-   .mMMs-ohddho-    yMMm.+yddhs:`         
-      :NMMo//+yNMm+`    .yNd:`hMM+    yMMNdhyhNMMdddyymMMm-  .mMMmdhyydMMN+   yMMNdhyyhNMNy`        
-      :NMMNNNMMm+.    `/mNh. `hMM+    yMMN:  `oMMMy`  -NMMs  .mMMd-   `sMMN-  yMMN:`  `/NMM+        
-      :NMM/.-sNMm+   `sMMh+///mMMy/-  yMMd`   :NMM:    mMMy  .mMMo     :MMM:  yMMd     `mMMs        
-      :NMM-   +NMMs` `dNNNNNNNMMMNNy  yMMd`   :NMM:    mMMy  .mMMy`   `oMMm-  yMMm`    /NMM/        
-      :NMM-    :mMMh. .......-dMMo..  yMMd`   :NMM:    mMMy  .mMMNh+/+yMMN+   yMMMdo//sNMMy`        
-      -mNN-     -dNNh.       `hNN+    sNNh`   :mNN:    dNNs  `dNNysmNNNmy-    yNNdodNNNmh/`         
-      `...`      `...`        ...`    ....    `...`    ....   ...` `...`      ....  ...`            
-                                                                                                    
-                                                                                                    
-    
-'''
+from ip_scan import ip_scan
 
 enableList = []
 exitToken = 0
@@ -44,7 +24,7 @@ def toolSearch():
 
 
     os.system("clear")
-    print(disp)
+    
     print("[**] Installed require tool/package searching... [**]")
     print()
 
@@ -61,7 +41,7 @@ def toolSearch():
             enableList.append(1)
 
     os.system("clear")
-    print(disp)
+    
     print('-'*35)
     print()
     print("[**] Installed require tool/package search [**]")
@@ -118,7 +98,7 @@ def isTool(command):
 
 def notFoundTool(command):
     os.system("clear")
-    print(disp)
+    
     print("{} is not found..".format(command))
     time.sleep(2)
     return
@@ -128,7 +108,7 @@ def executeTool(n, args):
     if n == '1':
         if (isTool("nmap")):
             os.system("clear")
-            print(disp)
+            
             print("Select Scan Nmap..!")
             print(" 1. ALL ")
             print(" 2. TCP ")
@@ -155,7 +135,7 @@ def executeTool(n, args):
     elif n == '3':
         if (isTool("dirb")):
             os.system("clear")
-            print(disp)
+            
             print(" 1. http ")
             print(" 2. https ")
             print()
@@ -179,6 +159,10 @@ def executeTool(n, args):
             os.system("gnome-terminal -- sh -c \"msfconsole; exec sh\"".format(args.IP))
         else:
             notFoundTool("Metasploit")
+    elif n == '6':
+        ip_scan.ip_scan(args.IP)
+             
+        time.sleep(2)
     elif n == 'q':
         exitToken += 1
     else:
