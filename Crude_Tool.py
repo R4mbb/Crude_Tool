@@ -5,7 +5,7 @@ import argparse
 import time
 from subprocess import PIPE, Popen
 from tqdm import tqdm
-from ip_scan import ip_scan
+from modules.ipscan import ipscan
 
 enableList = []
 exitToken = 0
@@ -18,7 +18,7 @@ def toolSearch():
     # Tool presence
     global tools
 
-    tool_list = Popen('cat ./tool_list.txt', shell=True, stdout=PIPE, stderr=PIPE)
+    tool_list = Popen('cat ./require/tool_list.txt', shell=True, stdout=PIPE, stderr=PIPE)
     tools, toolsErr = tool_list.communicate()
     tools = tools.decode().split('\n')[:-1]
 
@@ -90,7 +90,7 @@ def isTool(command):
     isCommand = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
     isCommandOut, isCommandErr = isCommand.communicate()
 
-    if (isCommandOut):
+    if isCommandOut:
         return True
     else:
         return False
@@ -160,9 +160,10 @@ def executeTool(n, args):
         else:
             notFoundTool("Metasploit")
     elif n == '6':
-        ip_scan.ip_scan(args.IP)
-             
+        ipscan.ipscan(args.IP)
+        print(1)
         time.sleep(2)
+             
     elif n == 'q':
         exitToken += 1
     else:

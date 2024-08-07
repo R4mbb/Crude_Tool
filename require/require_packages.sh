@@ -13,6 +13,6 @@ for i in ${tool_list[@]}; do
   then
     continue
   else
-    `apt-get install -y ${i}`
+    apt-get install -y ${i}
   fi
 done
