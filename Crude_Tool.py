@@ -5,7 +5,10 @@ import argparse
 import time
 from subprocess import PIPE, Popen
 from tqdm import tqdm
+
 from modules.ipscan import ipscan
+from modules.search import search
+
 
 enableList = []
 exitToken = 0
@@ -28,6 +31,12 @@ def toolSearch():
     print("[**] Installed require tool/package searching... [**]")
     print()
 
+   
+    # last Edit here
+    test = search.Search()
+    print("{}".format(test.getToolList())
+
+"""
     for i in tqdm(tools):
         if '[package]' in i:
             i = i.replace(' [package]', '')
@@ -41,7 +50,8 @@ def toolSearch():
             enableList.append(1)
 
     os.system("clear")
-    
+"""
+
     print('-'*35)
     print()
     print("[**] Installed require tool/package search [**]")
@@ -49,6 +59,7 @@ def toolSearch():
     print('-'*35)
     print()
 
+"""
     for num, tool in enumerate(tools):
         installed = ''
         if '[package]' in tool:
@@ -59,6 +70,7 @@ def toolSearch():
         else:
             installed = 'Not Installed!!'
         print(" {0:<15} [{1}] ".format(tool, installed))
+"""
 
     print()
     print("Enter to Restart Search!!")
@@ -160,7 +172,7 @@ def executeTool(n, args):
         else:
             notFoundTool("Metasploit")
     elif n == '6':
-        ipscan.ipscan(args.IP)
+        print("{}".format(ipscan(args.IP)))
         print(1)
         time.sleep(2)
              
