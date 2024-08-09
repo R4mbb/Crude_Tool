@@ -7,7 +7,7 @@ from subprocess import PIPE, Popen
 from tqdm import tqdm
 
 from modules.ipscan import ipscan
-from modules.search import search
+from modules.search import getToolList
 
 
 enableList = []
@@ -28,52 +28,22 @@ def toolSearch():
 
     os.system("clear")
     
+
     print("[**] Installed require tool/package searching... [**]")
     print()
-
-   
-    # last Edit here
-    test = search.Search()
-    print("{}".format(test.getToolList())
-
-"""
-    for i in tqdm(tools):
-        if '[package]' in i:
-            i = i.replace(' [package]', '')
-        apt_list = Popen('dpkg -l {}'.format(i), shell=True, stdout=PIPE, stderr=PIPE)
-        found, foundErr = apt_list.communicate()
-        time.sleep(0.05)
-
-        if b'<none>' in found or b'no packages' in foundErr:
-            enableList.append(0)
-        else:
-            enableList.append(1)
-
-    os.system("clear")
-"""
-
     print('-'*35)
     print()
+    
+    enableList = getToolList(tools)
+
     print("[**] Installed require tool/package search [**]")
     print()
     print('-'*35)
     print()
 
-"""
-    for num, tool in enumerate(tools):
-        installed = ''
-        if '[package]' in tool:
-            tool = tool.replace(' [package]', '')
+    for i in enableList:
+        print(" {0:<15} {1}".format(i, enableList[i]))
 
-        if enableList[num]:
-            installed = 'Installed!!'
-        else:
-            installed = 'Not Installed!!'
-        print(" {0:<15} [{1}] ".format(tool, installed))
-"""
-
-    print()
-    print("Enter to Restart Search!!")
     print()
     print('-'*35)
     print()
