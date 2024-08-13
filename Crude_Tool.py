@@ -25,46 +25,27 @@ def toolSearch():
     tools, toolsErr = tool_list.communicate()
     tools = tools.decode().split('\n')[:-1]
 
-
     os.system("clear")
     
-
-    print("[**] Installed require tool/package searching... [**]")
-    print()
-    print('-'*35)
-    print()
-    
-    enableList = getToolList(tools)
-
-    print("[**] Installed require tool/package search [**]")
-    print()
-    print('-'*35)
-    print()
-
-    for i in enableList:
-        print(" {0:<15} {1}".format(i, enableList[i]))
-
-    print()
-    print('-'*35)
-    print()
+    return getToolList(tools)
 
 
 def menu(args):
-    init()
     print("[Target IP] ==> {}".format(args.IP))
     print()
     print("Select Mode plz..")
     print(" q. Quit ")
 
-    num = 0
-    for tool in tools:
-        if '[package]' in tool:
+    enableList = toolSearch()
+
+    for num,tool in enumerate(enableList):
+        if 'Not' in enableList[tool]:
+            print(" {:>2}. {:<15} [{:<15}]".format(num, tool, enableList[tool]))
             continue
-        num += 1
-        print(" {}. {}".format(num, tool))
+        print(" {:>2}. {:<15}".format(num, tool))
 
     print()
-    n = input("R4mbb >> ")
+    n = input("Select >> ")
     return n
 
 
@@ -153,7 +134,7 @@ def executeTool(n, args):
 
 
 def init():
-    toolSearch()
+    pass
 #   osSearch()
 
 
@@ -179,9 +160,4 @@ if __name__ == '__main__':
                 break
     except:
         pass
-    """
-    except:
-        os.system("clear")
-        print()
-        print("Bye~")
-    """
+
