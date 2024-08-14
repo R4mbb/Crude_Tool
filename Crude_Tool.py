@@ -31,18 +31,18 @@ def toolSearch():
 
 
 def menu(args):
+    enableList = toolSearch()
+
     print("[Target IP] ==> {}".format(args.IP))
     print()
     print("Select Mode plz..")
-    print(" q. Quit ")
-
-    enableList = toolSearch()
+    print(" {:>2}. {:<15} ".format("q", "Quit"))
 
     for num,tool in enumerate(enableList):
         if 'Not' in enableList[tool]:
-            print(" {:>2}. {:<15} [{:<15}]".format(num, tool, enableList[tool]))
+            print(" {:>2}. {:<15} [{:<15}]".format(num+1, tool, enableList[tool]))
             continue
-        print(" {:>2}. {:<15}".format(num, tool))
+        print(" {:>2}. {:<15}".format(num+1, tool))
 
     print()
     n = input("Select >> ")

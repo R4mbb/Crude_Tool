@@ -2,5 +2,6 @@ gnome-terminal [package]
 nmap
 nikto
 dirb
+minal [package]
 dirsearch
 msfconsole
