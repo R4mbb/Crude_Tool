@@ -32,10 +32,21 @@ def getToolList(tools):
     return enableList
 
 
-def toolSearch():
+def isTool(command):
+    isCommand = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
+    isCommandout, _ = isCommand.communicate()
+
+    if isCommandout:
+        return True
+    else:
+        os.system("clear")
+        print("{} is not found...".format(command))
+        time.sleep(2)
+        return
+
+
+def osSearch():
     pass
-
-
 
 def osSearch():
     pass

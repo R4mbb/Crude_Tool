@@ -7,7 +7,7 @@ from subprocess import PIPE, Popen
 from tqdm import tqdm
 
 from modules.ipscan import ipscan
-from modules.search import getToolList
+from modules.search import getToolList, isTool
 
 
 enableList = []
@@ -48,25 +48,6 @@ def menu(args):
     n = input("Select >> ")
     return n
 
-
-def isTool(command):
-    isCommand = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
-    isCommandOut, isCommandErr = isCommand.communicate()
-
-    if isCommandOut:
-        return True
-    else:
-        return False
-
-
-def notFoundTool(command):
-    os.system("clear")
-    
-    print("{} is not found..".format(command))
-    time.sleep(2)
-    return
-
-
 def executeTool(n, args):
     if n == '1':
         if (isTool("nmap")):
@@ -79,22 +60,16 @@ def executeTool(n, args):
             print()
             n2 = input("R4mbb >> ")
             if n2 == '1':
-                os.system("gnome-terminal -- sh -c \"nmap -A -p 1-65535 {}; exec sh\"".format(args.IP))
+                os.system("nmap -A -p 1-65535 {}; sleep 2s".format(args.IP))
             elif n2 == '2':
                 os.system("gnome-terminal -- sh -c \"nmap -sT {}; exec sh\"".format(args.IP))
             elif n2 == '3':
                 os.system("gnome-terminal -- sh -c \"nmap -sUV -T4 -F --version-intensity 0 {}; exec sh\"".format(args.IP))
             else:
                 return
-        else:
-            notFoundTool("Nmap")
-            return
     elif n == '2':
         if (isTool("nikto")):
             os.system("gnome-terminal -- sh -c \"nikto -h {}; exec sh\"".format(args.IP))
-        else:
-            notFoundTool("Nikto")
-            return
     elif n == '3':
         if (isTool("dirb")):
             os.system("clear")
@@ -109,19 +84,12 @@ def executeTool(n, args):
                 os.system("gnome-terminal -- sh -c \"dirb https://{}; exec sh\"".format(args.IP))
             else:
                 return
-        else:
-            notFoundTool("Dirb")
-            return
     elif n == '4':
         if (isTool("dirsearch")):
             os.system("gnome-terminal -- sh -c \"dirsearch -u {}; exec sh\"".format(args.IP))
-        else:
-            notFoundTool("Dirsearch")
     elif n == '5':
         if (isTool("msfconsole")):
             os.system("gnome-terminal -- sh -c \"msfconsole; exec sh\"".format(args.IP))
-        else:
-            notFoundTool("Metasploit")
     elif n == '6':
         print("{}".format(ipscan(args.IP)))
         print(1)
