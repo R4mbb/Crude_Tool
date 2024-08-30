@@ -8,6 +8,7 @@ from tqdm import tqdm
 
 from modules.ipscan import ipscan
 from modules.search import getToolList, isTool
+from modules.tools import Tools
 
 
 enableList = []
@@ -60,16 +61,16 @@ def executeTool(n, args):
             print()
             n2 = input("R4mbb >> ")
             if n2 == '1':
-                os.system("nmap -A -p 1-65535 {}; sleep 2s".format(args.IP))
+                os.system("nmap -sV -T5 -p 1-65535 {}; sleep 2s".format(args.IP))
             elif n2 == '2':
-                os.system("gnome-terminal -- sh -c \"nmap -sT {}; exec sh\"".format(args.IP))
+                os.system("nmap -sTV -T5 {}".format(args.IP))
             elif n2 == '3':
-                os.system("gnome-terminal -- sh -c \"nmap -sUV -T4 -F --version-intensity 0 {}; exec sh\"".format(args.IP))
+                os.system("nmap -sUV -T5 {}".format(args.IP))
             else:
                 return
     elif n == '2':
         if (isTool("nikto")):
-            os.system("gnome-terminal -- sh -c \"nikto -h {}; exec sh\"".format(args.IP))
+            os.system("nikto -h {}".format(args.IP))
     elif n == '3':
         if (isTool("dirb")):
             os.system("clear")
@@ -79,17 +80,17 @@ def executeTool(n, args):
             print()
             n2 = input("R4mbb >> ")
             if n2 == '1':
-                os.system("gnome-terminal -- sh -c \"dirb http://{}; exec sh\"".format(args.IP))
+                os.system("dirb http://{}".format(args.IP))
             elif n2 == '2':
-                os.system("gnome-terminal -- sh -c \"dirb https://{}; exec sh\"".format(args.IP))
+                os.system("dirb https://{}".format(args.IP))
             else:
                 return
     elif n == '4':
         if (isTool("dirsearch")):
-            os.system("gnome-terminal -- sh -c \"dirsearch -u {}; exec sh\"".format(args.IP))
+            os.system("dirsearch -u {}".format(args.IP))
     elif n == '5':
         if (isTool("msfconsole")):
-            os.system("gnome-terminal -- sh -c \"msfconsole; exec sh\"".format(args.IP))
+            os.system("msfconsole".format(args.IP))
     elif n == '6':
         print("{}".format(ipscan(args.IP)))
         print(1)
@@ -102,8 +103,8 @@ def executeTool(n, args):
 
 
 def init():
-    pass
-#   osSearch()
+    initial = Tools()
+    initial.ip = args.IP
 
 
 def main():
@@ -121,6 +122,7 @@ def main():
 
 
 if __name__ == '__main__':
+    init()
     try:
         while True:
             main()

@@ -3,8 +3,8 @@ class Tools:
         self.ip = ip
 
 
-    def nmap():
-        pass
+    def nmap(self, select):
+        
 
     def nikto():
         pass
